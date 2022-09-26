@@ -1,2 +1,2 @@
 # kaphene
-Distributed WebAssembly Runtime
+Distributed Runtime in Rust
