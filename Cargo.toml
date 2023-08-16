@@ -1,0 +1,29 @@
+[package]
+name = "kaphene"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = {  version = "4.3.19", default-features = true, features = ["derive"] }
+color-eyre = "0.6.2"
+eyre = "0.6.8"
+futures = "0.3"
+thiserror = "1.0"
+tokio = { version = "1.25.0", features = ["full"] }
+tracing = "0.1.37"
+tracing-error = "0.2.0"
+tracing-subscriber = { version = "0.3.17", default-features = true, features = ["env-filter"] }
+
+[dev-dependencies]
+assert_cmd = "2.0.12"
+tokio-test = "*"
+tracing = "0.1.37"
+
+# This binary is for the control plane server.
+[[bin]]
+name = "kaphene"
+path = "src/bin/main.rs"
+
+[lib]
+name = "libkaphene"
+path = "src/lib.rs"
