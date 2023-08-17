@@ -1,10 +1,13 @@
+use std::future::Future;
+
 use clap::Parser;
 
 use crate::Error;
 use crate::instrumentation;
-use crate::logger;
+use crate::node::Node;
+use crate::server::Server;
 
-pub const DEFAULT_SOCKET_PATH: &'static str = "/tmp/kaphene.sock";
+pub const DEFAULT_SOCKET_PATH: &'static str = "/tmp/kaphd.sock";
 
 pub enum AgentKind {
     Node,
@@ -17,19 +20,26 @@ pub struct AgentOpts {
 }
 
 pub trait Agent {
-    async fn new(mut opts: AgentOpts) -> Result<(), Error> {
+
+    async fn new(mut opts: AgentOpts, shutdown: impl Future) -> Result<(), Error> {
         if opts.socket_path.is_none() {
             opts.socket_path = Some(DEFAULT_SOCKET_PATH.to_string());
         }
 
-        Agent::start(opts)
+        match opts.kind {
+            AgentKind::Node => Node::start(opts, shutdown),
+            AgentKind::Server => Server::start(opts, shutdown),
+        }
     }
 
-    async fn start(opts: AgentOpts) -> Result<(), Error>;
+    #[tracing::instrument]
+    async fn start(opts: AgentOpts, shutdown: impl Future) -> Result<(), Error>;
 }
 
 #[derive(Parser)]
-pub(crate) struct Cli {
+pub struct Cli {
     #[clap(flatten)]
-    pub(crate) instrumentation: instrumentation::Instrumentation,
+    pub opts: AgentOpts,
+    #[clap(flatten)]
+    pub instrumentation: instrumentation::Instrumentation,
 }

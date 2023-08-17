@@ -1,13 +1,14 @@
-mod agent;
+pub mod agent;
 
-mod errors;
-pub use errors::Error;
+pub mod error;
+pub use error::Error;
+pub use error::Result;
 
-mod instrumentation;
+pub mod instrumentation;
 
-mod logger;
+pub mod logger;
 
-mod node;
+pub mod node;
 
-mod server;
+pub mod server;
 
