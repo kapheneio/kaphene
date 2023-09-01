@@ -1,26 +1,29 @@
 use std::fmt::Formatter;
-use thiserror::Error;
 
-#[derive(Error, Debug)]
+#[derive(thiserror::Error, Debug)]
 pub enum Error {
+    #[error("cluster error: {0}")]
+    Cluster(String),
+    #[error("config error: {0}")]
+    Config(String),
     #[error("io error")]
     Io(#[from] std::io::Error),
     #[error("lock error")]
     Lock,
     #[error("node error")]
     Node,
-    #[error("server error")]
-    Server,
-    #[error("socket error")]
-    Socket,
+    #[error("server error: {0}")]
+    Server(String),
+    #[error("socket error: {0}")]
+    Socket(String),
 }
 
-pub type Result<T, E = Report> = color_eyre::Result<T, E>;
+pub(crate) type Result<T, E = Report> = color_eyre::Result<T, E>;
 
 // Matches:
 // `Err(some_err).wrap_err("Some context")`
 // `Err(color_eyre::eyre::Report::new(SomeError))`
-pub struct Report(color_eyre::Report);
+pub(crate) struct Report(pub color_eyre::Report);
 
 impl std::fmt::Debug for Report {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {

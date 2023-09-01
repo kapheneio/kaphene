@@ -1,14 +1,15 @@
-use color_eyre::config::{HookBuilder, Theme};
-use kaphene::Result;
-use kaphene::agent::{Agent, Cli};
+use std::{io::IsTerminal, process::ExitCode};
+use std::error::Error;
+
 
 use clap::Parser;
-use std::{io::IsTerminal, process::ExitCode};
+use color_eyre::config::{HookBuilder, Theme};
+use kaphene::agent::{Agent, Cli};
 use tokio::signal;
 
 #[tokio::main]
 #[tracing::instrument]
-async fn main() -> Result<ExitCode>{
+async fn main() -> Result<ExitCode, dyn Error>{
     HookBuilder::default()
         .theme(if !std::io::stderr().is_terminal(){
             Theme::new()

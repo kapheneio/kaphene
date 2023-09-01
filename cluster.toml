@@ -1,0 +1,18 @@
+
+[servers]
+    [servers.server1]
+    name = "server-1"
+    kind = "server"
+[nodes]
+    [nodes.node1]
+    name = "node-1"
+    kind = "node"
+    join = "server-1"
+    [nodes.node2]
+    name = "node-2"
+    kind = "node"
+    join = "server-1"
+    [nodes.node3]
+    name = "node-3"
+    kind = "node"
+    join = "server-1"

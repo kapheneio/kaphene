@@ -2,10 +2,11 @@ use color_eyre::eyre::WrapErr;
 use std::{error::Error, io::IsTerminal};
 use tracing::Subscriber;
 use tracing_subscriber::{
-    filter::{Directive, EnvFilter},
+    filter::Directive,
     layer::{Layer, SubscriberExt},
     registry::LookupSpan,
-    util::SubscriberInitExt
+    util::SubscriberInitExt,
+    EnvFilter,
 };
 use crate::logger::Logger;
 

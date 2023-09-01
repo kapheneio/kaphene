@@ -4,15 +4,23 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-clap = {  version = "4.3.19", default-features = true, features = ["derive"] }
+async-trait = "0.1.72"
+#aya = { version = "0.11.0", optional = true}
+bytes = "1.4.0"
+clap = {  version = "4.3.12", default-features = true, features = ["derive", "env"] }
+clap_derive = "4.3.12"
 color-eyre = "0.6.2"
 eyre = "0.6.8"
 futures = "0.3"
+#libbpf-rs = { version = "0.21.1", optional = true }
+serde = { version = "1.0.177", features = ["derive"] }
+serde_json = "1.0.104"
 thiserror = "1.0"
 tokio = { version = "1.25.0", features = ["full"] }
+toml = "0.7.6"
 tracing = "0.1.37"
 tracing-error = "0.2.0"
-tracing-subscriber = { version = "0.3.17", default-features = true, features = ["env-filter"] }
+tracing-subscriber = { version = "0.3.17", default-features = true, features = ["env-filter", "fmt", "json"] }
 
 [dev-dependencies]
 assert_cmd = "2.0.12"
@@ -24,6 +32,15 @@ tracing = "0.1.37"
 name = "kaphd"
 path = "src/bin/main.rs"
 
+[[bin]]
+name = "kaphene"
+path = "src/cli/main.rs"
+
 [lib]
 name = "kaphene"
 path = "src/lib.rs"
+
+#[features]
+#default = ["dep:aya", "dep:libbpf-rs"]
+#aya = ["dep:aya"]
+#libbpf-rs = ["dep:libbpf-rs"]
